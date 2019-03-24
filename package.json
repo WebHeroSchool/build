@@ -1,0 +1,23 @@
+{
+  "name": "build",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "hello": "echo hello",
+    "start": "node hello.js",
+    "createBuild": "mkdir build",
+    "deleteBuild": "rmdir build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebHeroSchool/build.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WebHeroSchool/build/issues"
+  },
+  "homepage": "https://github.com/WebHeroSchool/build#readme",
+  "description": ""
+}
