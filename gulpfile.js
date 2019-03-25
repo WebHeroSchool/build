@@ -3,7 +3,8 @@ const gulp = require( 'gulp' ),
       concat = require('gulp-concat'),
       uglify = require('gulp-uglify'),
       cssnano = require('gulp-cssnano'),
-      sourcemaps = require('gulp-sourcemaps');
+      sourcemaps = require('gulp-sourcemaps'),
+      browserSync = require('browser-sync').create();
 
 const paths = {
     src: {
@@ -49,7 +50,16 @@ gulp.task( 'build-css', () => {
 
 gulp.task( 'default', [ 'build-js', 'build-css'] );
 
-gulp.task( 'watch', () => {
-  gulp.watch( 'scripts/*.js', ['build-js'] );
-  gulp.watch( 'styles/*.css', ['build-css'] );
+gulp.task( 'browserSync', () => {
+  browserSync.init({
+    server: {
+        baseDir: "./"
+    }
+  });
+
+  gulp.watch( 'scripts/*.js', ['js-watch'] );
+  gulp.watch( 'styles/*.css', ['css-watch'] );
 } );
+
+gulp.task( 'js-watch', [ 'build-js' ], () => browserSync.reload() );
+gulp.task( 'css-watch', [ 'build-css' ], () => browserSync.reload() );
