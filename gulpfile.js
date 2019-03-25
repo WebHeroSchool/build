@@ -1,5 +1,7 @@
 const gulp = require( 'gulp' ),
-      babel = require( 'gulp-babel' );
+      babel = require( 'gulp-babel' ),
+      concat = require('gulp-concat'),
+      uglify = require('gulp-uglify');
 
 gulp.task( 'time', () => {
   let date = new Date;
@@ -9,14 +11,17 @@ gulp.task( 'time', () => {
 
 gulp.task( 'build-js', () => {
   return gulp.src( 'scripts/*.js' )
-    .pipe(babel({
+    .pipe( concat( 'index.min.js' ) )
+    .pipe( babel({
       presets: ['@babel/env']
     }))
+    .pipe( uglify() )
     .pipe( gulp.dest('build/scripts') );
 } );
 
 gulp.task( 'build-css', () => {
   return gulp.src( 'styles/*.css' )
+    .pipe( concat( 'styles' ) )
     .pipe( gulp.dest('build/styles') );
 } );
 
