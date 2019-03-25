@@ -11,7 +11,7 @@ gulp.task( 'time', () => {
 
 gulp.task( 'build-js', () => {
   return gulp.src( 'scripts/*.js' )
-    .pipe( concat( 'scripts' ) )
+    .pipe( concat( 'index.min.js' ) )
     .pipe( babel({
       presets: ['@babel/env']
     }))
