@@ -1,4 +1,5 @@
-const gulp = require( 'gulp' );
+const gulp = require( 'gulp' ),
+      babel = require( 'gulp-babel' );
 
 gulp.task( 'time', () => {
   let date = new Date;
@@ -8,6 +9,9 @@ gulp.task( 'time', () => {
 
 gulp.task( 'build-js', () => {
   return gulp.src( 'scripts/*.js' )
+    .pipe(babel({
+      presets: ['@babel/env']
+    }))
     .pipe( gulp.dest('build/scripts') );
 } );
 

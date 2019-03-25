@@ -21,6 +21,9 @@
   "homepage": "https://github.com/WebHeroSchool/build#readme",
   "description": "",
   "devDependencies": {
-    "gulp": "^3.9.1"
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^8.0.0"
   }
 }
