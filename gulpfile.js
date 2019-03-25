@@ -1,10 +1,11 @@
 const gulp = require( 'gulp' ),
       babel = require( 'gulp-babel' ),
-      concat = require('gulp-concat'),
-      uglify = require('gulp-uglify'),
-      cssnano = require('gulp-cssnano'),
-      sourcemaps = require('gulp-sourcemaps'),
-      browserSync = require('browser-sync').create();
+      concat = require( 'gulp-concat' ),
+      uglify = require( 'gulp-uglify' ),
+      gulpif = require('gulp-if');
+      cssnano = require( 'gulp-cssnano' ),
+      sourcemaps = require( 'gulp-sourcemaps' ),
+      browserSync = require( 'browser-sync' ).create();
 
 const paths = {
     src: {
@@ -34,7 +35,7 @@ gulp.task( 'build-js', () => {
       .pipe( babel({
         presets: ['@babel/env']
       }))
-      .pipe( uglify() )
+      .pipe( gulpif(process.env.NODE_ENV === 'production', uglify())  )
     .pipe(sourcemaps.write('../maps'))
     .pipe( gulp.dest( paths.build.scripts ) );
 } );
@@ -43,7 +44,7 @@ gulp.task( 'build-css', () => {
   return gulp.src( [paths.src.styles] )
     .pipe(sourcemaps.init())
       .pipe( concat( paths.buildNames.styles ) )
-      .pipe(cssnano())
+      .pipe( gulpif(process.env.NODE_ENV === 'production', cssnano())  )
     .pipe(sourcemaps.write('../maps'))
     .pipe( gulp.dest( paths.build.styles ) );
 } );
@@ -64,5 +65,6 @@ gulp.task( 'browserSync', () => {
 gulp.task( 'js-watch', [ 'build-js' ], () => browserSync.reload() );
 gulp.task( 'css-watch', [ 'build-css' ], () => browserSync.reload() );
 
+gulp.task( 'default', ['build'] );
 gulp.task( 'dev', ['build', 'browserSync'] );
 gulp.task( 'prod', ['build'] );
