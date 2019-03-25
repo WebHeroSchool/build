@@ -1,7 +1,8 @@
 const gulp = require( 'gulp' ),
       babel = require( 'gulp-babel' ),
       concat = require('gulp-concat'),
-      uglify = require('gulp-uglify');
+      uglify = require('gulp-uglify'),
+      cssnano = require('gulp-cssnano');
 
 gulp.task( 'time', () => {
   let date = new Date;
@@ -21,7 +22,8 @@ gulp.task( 'build-js', () => {
 
 gulp.task( 'build-css', () => {
   return gulp.src( 'styles/*.css' )
-    .pipe( concat( 'styles' ) )
+    .pipe( concat( 'index.min.css' ) )
+    .pipe(cssnano())
     .pipe( gulp.dest('build/styles') );
 } );
 
