@@ -1,8 +1,9 @@
-const gulp = require( 'gulp' ),
+const env = require('gulp-env'),
+      gulp = require( 'gulp' ),
       babel = require( 'gulp-babel' ),
       concat = require( 'gulp-concat' ),
       uglify = require( 'gulp-uglify' ),
-      gulpif = require('gulp-if');
+      gulpif = require('gulp-if'),
       cssnano = require( 'gulp-cssnano' ),
       sourcemaps = require( 'gulp-sourcemaps' ),
       browserSync = require( 'browser-sync' ).create();
@@ -22,8 +23,13 @@ const paths = {
     }
 };
 
+env({
+  file: '.env',
+  type: 'ini',
+});
+
 gulp.task( 'time', () => {
-  let date = new Date;
+  let date = new Date();
 
   console.log( "Текущее время: " + date.getHours() + ":" + date.getMinutes() );
 } );
