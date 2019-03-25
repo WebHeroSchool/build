@@ -2,7 +2,8 @@ const gulp = require( 'gulp' ),
       babel = require( 'gulp-babel' ),
       concat = require('gulp-concat'),
       uglify = require('gulp-uglify'),
-      cssnano = require('gulp-cssnano');
+      cssnano = require('gulp-cssnano'),
+      sourcemaps = require('gulp-sourcemaps');
 
 gulp.task( 'time', () => {
   let date = new Date;
@@ -12,19 +13,23 @@ gulp.task( 'time', () => {
 
 gulp.task( 'build-js', () => {
   return gulp.src( 'scripts/*.js' )
-    .pipe( concat( 'index.min.js' ) )
-    .pipe( babel({
-      presets: ['@babel/env']
-    }))
-    .pipe( uglify() )
+    .pipe(sourcemaps.init())
+      .pipe( concat( 'index.min.js' ) )
+      .pipe( babel({
+        presets: ['@babel/env']
+      }))
+      .pipe( uglify() )
+    .pipe(sourcemaps.write('../maps'))
     .pipe( gulp.dest('build/scripts') );
 } );
 
 gulp.task( 'build-css', () => {
   return gulp.src( 'styles/*.css' )
-    .pipe( concat( 'index.min.css' ) )
-    .pipe(cssnano())
+    .pipe(sourcemaps.init())
+      .pipe( concat( 'index.min.css' ) )
+      .pipe(cssnano())
+    .pipe(sourcemaps.write('../maps'))
     .pipe( gulp.dest('build/styles') );
 } );
 
-gulp.task( 'build', [ 'build-js', 'build-css'] );
+gulp.task( 'default', [ 'build-js', 'build-css'] );
