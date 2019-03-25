@@ -33,3 +33,8 @@ gulp.task( 'build-css', () => {
 } );
 
 gulp.task( 'default', [ 'build-js', 'build-css'] );
+
+gulp.task( 'watch', () => {
+  gulp.watch( 'scripts/*.js', ['build-js'] );
+  gulp.watch( 'styles/*.css', ['build-css'] );
+} );
