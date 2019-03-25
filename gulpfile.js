@@ -1,5 +1,6 @@
 const env = require('gulp-env'),
       gulp = require( 'gulp' ),
+      clean = require('gulp-clean'),
       babel = require( 'gulp-babel' ),
       concat = require( 'gulp-concat' ),
       uglify = require( 'gulp-uglify' ),
@@ -71,6 +72,12 @@ gulp.task( 'browserSync', () => {
 gulp.task( 'js-watch', [ 'build-js' ], () => browserSync.reload() );
 gulp.task( 'css-watch', [ 'build-css' ], () => browserSync.reload() );
 
+gulp.task('clean-build', () => {
+  return gulp.src('./build', {read: false})
+    .pipe(clean());
+});
+
 gulp.task( 'default', ['build'] );
 gulp.task( 'dev', ['build', 'browserSync'] );
 gulp.task( 'prod', ['build'] );
+
