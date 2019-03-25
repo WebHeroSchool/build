@@ -1,9 +1,9 @@
 const gulp = require( 'gulp' ),
       babel = require( 'gulp-babel' ),
-      concat = require('gulp-concat'),
-      uglify = require('gulp-uglify'),
-      cssnano = require('gulp-cssnano'),
-      sourcemaps = require('gulp-sourcemaps');
+      concat = require( 'gulp-concat' ),
+      uglify = require( 'gulp-uglify' ),
+      cssnano = require( 'gulp-cssnano' ),
+      sourcemaps = require( 'gulp-sourcemaps' );
 
 const paths = {
     src: {
