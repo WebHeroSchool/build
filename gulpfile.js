@@ -1,10 +1,10 @@
 const gulp = require( 'gulp' ),
       babel = require( 'gulp-babel' ),
-      concat = require('gulp-concat'),
-      uglify = require('gulp-uglify'),
-      cssnano = require('gulp-cssnano'),
-      sourcemaps = require('gulp-sourcemaps'),
-      browserSync = require('browser-sync').create();
+      concat = require( 'gulp-concat' ),
+      uglify = require( 'gulp-uglify' ),
+      cssnano = require( 'gulp-cssnano' ),
+      sourcemaps = require( 'gulp-sourcemaps '),
+      browserSync = require( 'browser-sync' ).create();
 
 const paths = {
     src: {
