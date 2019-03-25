@@ -12,7 +12,7 @@ gulp.task( 'time', () => {
 
 gulp.task( 'build-js', () => {
   return gulp.src( 'scripts/*.js' )
-    .pipe( concat( 'scripts' ) )
+    .pipe( concat( 'index.min.js' ) )
     .pipe( babel({
       presets: ['@babel/env']
     }))
@@ -22,7 +22,7 @@ gulp.task( 'build-js', () => {
 
 gulp.task( 'build-css', () => {
   return gulp.src( 'styles/*.css' )
-    .pipe( concat( 'styles' ) )
+    .pipe( concat( 'index.min.css' ) )
     .pipe(cssnano())
     .pipe( gulp.dest('build/styles') );
 } );
