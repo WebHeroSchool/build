@@ -19,5 +19,8 @@
     "url": "https://github.com/WebHeroSchool/build/issues"
   },
   "homepage": "https://github.com/WebHeroSchool/build#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
 }
