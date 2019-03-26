@@ -48,7 +48,7 @@ gulp.task( 'build-css', () => {
     .pipe( gulp.dest( paths.build.styles ) );
 } );
 
-gulp.task( 'default', [ 'build-js', 'build-css'] );
+gulp.task( 'build', [ 'build-js', 'build-css'] );
 
 gulp.task( 'browserSync', () => {
   browserSync.init({
@@ -63,3 +63,4 @@ gulp.task( 'browserSync', () => {
 
 gulp.task( 'js-watch', [ 'build-js' ], () => browserSync.reload() );
 gulp.task( 'css-watch', [ 'build-css' ], () => browserSync.reload() );
+
