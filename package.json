@@ -5,9 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "hello": "echo hello",
-    "start": "node hello.js",
-    "createBuild": "mkdir build",
-    "deleteBuild": "rmdir build"
+    "start": "gulp dev",
+    "build": "gulp"
   },
   "repository": {
     "type": "git",
@@ -26,8 +25,11 @@
     "browser-sync": "^2.26.3",
     "gulp": "^3.9.1",
     "gulp-babel": "^8.0.0",
+    "gulp-clean": "^0.4.0",
     "gulp-concat": "^2.6.1",
     "gulp-cssnano": "^2.1.3",
+    "gulp-env": "^0.4.0",
+    "gulp-if": "^2.0.2",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-uglify": "^3.0.2",
     "gulp-watch": "^5.0.1",
