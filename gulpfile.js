@@ -4,9 +4,8 @@ const env = require('gulp-env'),
       babel = require( 'gulp-babel' ),
       concat = require( 'gulp-concat' ),
       uglify = require( 'gulp-uglify' ),
-      gulpif = require('gulp-if'),
       cssnano = require( 'gulp-cssnano' ),
-      sourcemaps = require( 'gulp-sourcemaps' ),
+      sourcemaps = require( 'gulp-sourcemaps '),
       browserSync = require( 'browser-sync' ).create();
 
 const paths = {
@@ -80,3 +79,4 @@ gulp.task('clean-build', () => {
 gulp.task( 'default', ['build'] );
 gulp.task( 'dev', ['build', 'browserSync'] );
 gulp.task( 'prod', ['build'] );
+
