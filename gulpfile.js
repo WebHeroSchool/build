@@ -18,10 +18,6 @@ const env = require( 'gulp-env' ),
       autoprefixer = require( 'autoprefixer' ), 
       postcssPresetEnv = require( 'postcss-preset-env' ),
       templateContext = require( './src/db.json' );
-      
-      
-      
-      
 
 const paths = {
     src: {
