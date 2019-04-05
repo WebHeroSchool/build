@@ -1,12 +1,22 @@
-const env = require('gulp-env'),
+const env = require( 'gulp-env' ),
       gulp = require( 'gulp' ),
-      clean = require('gulp-clean'),
+      clean = require( 'gulp-clean' ),
       babel = require( 'gulp-babel' ),
+      short = require( 'postcss-short' ),
       concat = require( 'gulp-concat' ),
       uglify = require( 'gulp-uglify' ),
+      gulpif = require( 'gulp-if' ),
+      nested = require( 'postcss-nested' ),
+      assets = require( 'postcss-assets' ),
+      postcss = require( 'gulp-postcss' ),
       cssnano = require( 'gulp-cssnano' ),
-      sourcemaps = require( 'gulp-sourcemaps '),
-      browserSync = require( 'browser-sync' ).create();
+      sourcemaps = require( 'gulp-sourcemaps' ),
+      browserSync = require( 'browser-sync' ).create(),
+      autoprefixer = require( 'autoprefixer' ), 
+      postcssPresetEnv = require( 'postcss-preset-env' ),
+      handlebars = require( 'gulp-compile-handlebars' ),
+      glob = require( 'glob' ),
+      rename = require( 'gulp-rename' );
 
 const paths = {
     src: {
@@ -14,18 +24,36 @@ const paths = {
       scripts: 'scripts/*.js'
     },
     build: {
+      dir: 'build/',
       styles: 'build/styles',
       scripts: 'build/scripts'
     },
     buildNames: {
       styles: 'index.min.css',
       scripts: 'index.min.js'
-    }
+    },
+    templates: 'templates/**/*.hbs'
 };
 
 env({
   file: '.env',
   type: 'ini',
+});
+
+gulp.task('compile', () => {
+	glob(paths.templates, (err, files) => {
+		if (!err) {
+			const options = {
+				ignorePartials: true,
+				batch: files.map(item => item.slice(0, item.lastIndexOf('/')))
+      };
+      
+			return gulp.src('./templates}/index.hbs')
+        .pipe(handlebars({},options))
+        .pipe(rename('index.html'))
+        .pipe(gulp.dest(paths.build.dir));
+		}
+	});
 });
 
 gulp.task( 'time', () => {
@@ -46,12 +74,26 @@ gulp.task( 'build-js', () => {
     .pipe( gulp.dest( paths.build.scripts ) );
 } );
 
-gulp.task( 'build-css', () => {
+gulp.task( 'build-cs', () => {
+  const plugins = [
+    nested,
+    short,
+    assets({
+      loadPaths: ['./images'],
+      relativeTo: 'src/styles',
+    }),
+    postcssPresetEnv(/* pluginOptions */),
+    autoprefixer({
+      browsers: ['last 1 version']
+    }),
+  ];
+
   return gulp.src( [paths.src.styles] )
-    .pipe(sourcemaps.init())
+    .pipe( sourcemaps.init() )
+    .pipe( postcss(plugins) )
       .pipe( concat( paths.buildNames.styles ) )
-      .pipe( gulpif(process.env.NODE_ENV === 'production', cssnano())  )
-    .pipe(sourcemaps.write('../maps'))
+      .pipe( gulpif(process.env.NODE_ENV === 'production', cssnano() )  )
+    .pipe( sourcemaps.write( '../maps') )
     .pipe( gulp.dest( paths.build.styles ) );
 } );
 
