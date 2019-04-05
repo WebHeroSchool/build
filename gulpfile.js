@@ -1,4 +1,5 @@
 const env = require( 'gulp-env' ),
+      glob = require( 'glob' ),
       gulp = require( 'gulp' ),
       clean = require( 'gulp-clean' ),
       babel = require( 'gulp-babel' ),
@@ -8,22 +9,25 @@ const env = require( 'gulp-env' ),
       gulpif = require( 'gulp-if' ),
       nested = require( 'postcss-nested' ),
       assets = require( 'postcss-assets' ),
+      rename = require( 'gulp-rename' ),
       postcss = require( 'gulp-postcss' ),
       cssnano = require( 'gulp-cssnano' ),
+      handlebars = require( 'gulp-compile-handlebars' ),
       sourcemaps = require( 'gulp-sourcemaps' ),
       browserSync = require( 'browser-sync' ).create(),
       autoprefixer = require( 'autoprefixer' ), 
       postcssPresetEnv = require( 'postcss-preset-env' ),
-      handlebars = require( 'gulp-compile-handlebars' ),
-      glob = require( 'glob' ),
-      rename = require( 'gulp-rename' );
+      templateContext = require( './src/dataBase.json' );
+      
+      
+      
       
 
 const paths = {
     src: {
-      dir: 'templates',
-      styles: 'styles/*.css',
-      scripts: 'scripts/*.js'
+      dir: 'src/',
+      styles: 'scr/styles/*.css',
+      scripts: 'src/scripts/*.js'
     },
     build: {
       dir: 'build/',
@@ -34,7 +38,7 @@ const paths = {
       styles: 'index.min.css',
       scripts: 'index.min.js'
     },
-    templates: 'templates/**/*.hbs'
+    templates: 'src/templates/**/*.hbs'
 };
 
 env({
@@ -51,7 +55,7 @@ gulp.task('compile', () => {
       };
       
       return gulp.src(`${paths.src.dir}/index.hbs`)
-        .pipe(handlebars({}, options))
+        .pipe(handlebars(templateContext, options))
         .pipe(rename('index.html'))
         .pipe(gulp.dest(paths.build.dir))
     }
