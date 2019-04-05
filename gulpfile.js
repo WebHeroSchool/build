@@ -21,6 +21,7 @@ const env = require( 'gulp-env' ),
 
 const paths = {
     src: {
+      dir: 'templates',
       styles: 'styles/*.css',
       scripts: 'scripts/*.js'
     },
@@ -49,11 +50,11 @@ gulp.task('compile', () => {
 				batch: files.map(item => item.slice(0, item.lastIndexOf('/')))
       };
       
-			return gulp.src('./templates}/index.hbs')
-        .pipe(handlebars({},options))
+      return gulp.src(`${paths.src.dir}/index.hbs`)
+        .pipe(handlebars({}, options))
         .pipe(rename('index.html'))
-        .pipe(gulp.dest(paths.build.dir));
-		}
+        .pipe(gulp.dest(paths.build.dir))
+    }
 	});
 });
 
