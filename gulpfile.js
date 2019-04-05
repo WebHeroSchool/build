@@ -14,7 +14,6 @@ const env = require( 'gulp-env' ),
       browserSync = require( 'browser-sync' ).create(),
       autoprefixer = require( 'autoprefixer' ), 
       postcssPresetEnv = require( 'postcss-preset-env' ),
-
       handlebars = require( 'gulp-compile-handlebars' ),
       glob = require( 'glob' ),
       rename = require( 'gulp-rename' );
