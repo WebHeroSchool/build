@@ -2,18 +2,18 @@ const env = require( 'gulp-env' ),
       gulp = require( 'gulp' ),
       clean = require( 'gulp-clean' ),
       babel = require( 'gulp-babel' ),
+      short = require( 'postcss-short' ),
       concat = require( 'gulp-concat' ),
       uglify = require( 'gulp-uglify' ),
       gulpif = require( 'gulp-if' ),
       nested = require( 'postcss-nested' ),
-      short = require( 'postcss-short' ),
       assets = require( 'postcss-assets' ),
-      postcssPresetEnv = require('postcss-preset-env'),
-      autoprefixer = require( 'autoprefixer' ),
       postcss = require( 'gulp-postcss' ),
       cssnano = require( 'gulp-cssnano' ),
       sourcemaps = require( 'gulp-sourcemaps' ),
-      browserSync = require( 'browser-sync' ).create();
+      browserSync = require( 'browser-sync' ).create(),
+      autoprefixer = require( 'autoprefixer' ), 
+      postcssPresetEnv = require( 'postcss-preset-env' );
       
 
 const paths = {
