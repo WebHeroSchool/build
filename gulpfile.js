@@ -17,7 +17,7 @@ const env = require( 'gulp-env' ),
       browserSync = require( 'browser-sync' ).create(),
       autoprefixer = require( 'autoprefixer' ), 
       postcssPresetEnv = require( 'postcss-preset-env' ),
-      templateContext = require( './src/dataBase.json' );
+      templateContext = require( './src/db.json' );
       
       
       
