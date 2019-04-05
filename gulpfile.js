@@ -17,7 +17,6 @@ const env = require( 'gulp-env' ),
       handlebars = require( 'gulp-compile-handlebars' ),
       glob = require( 'glob' ),
       rename = require( 'gulp-rename' );
-      
 
 const paths = {
     src: {
