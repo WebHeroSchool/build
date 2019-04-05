@@ -13,7 +13,11 @@ const env = require( 'gulp-env' ),
       sourcemaps = require( 'gulp-sourcemaps' ),
       browserSync = require( 'browser-sync' ).create(),
       autoprefixer = require( 'autoprefixer' ), 
-      postcssPresetEnv = require( 'postcss-preset-env' );
+      postcssPresetEnv = require( 'postcss-preset-env' ),
+
+      handlebars = require( 'gulp-compile-handlebars' ),
+      glob = require( 'glob' ),
+      rename = require( 'gulp-rename' );
       
 
 const paths = {
@@ -29,11 +33,30 @@ const paths = {
       styles: 'index.min.css',
       scripts: 'index.min.js'
     }
+    templates: 'src/templates/**/*/.hbs'
+
+    }
 };
 
 env({
   file: '.env',
   type: 'ini',
+});
+
+gulp.task( 'compile', () => {
+  glob(paths.templates, (err, files) => {
+    if (!err) {
+      const options = {
+        ignorePartials: true,
+        batch: files.map(item => item.slice(0, item.lastIndexOf('/')))
+      };
+
+      gulp.src(`${paths.src.dir}/index.hbs`)
+        .pipe(handlebars({}, options))
+        .pipe(rename('index.html'))
+        .pipe(gulp.dest(paths.build.dir));
+    }
+  });
 });
 
 gulp.task( 'time', () => {
