@@ -1,13 +1,20 @@
-const env = require('gulp-env'),
+const env = require( 'gulp-env' ),
       gulp = require( 'gulp' ),
-      clean = require('gulp-clean'),
+      clean = require( 'gulp-clean' ),
       babel = require( 'gulp-babel' ),
       concat = require( 'gulp-concat' ),
       uglify = require( 'gulp-uglify' ),
-      gulpif = require('gulp-if'),
+      gulpif = require( 'gulp-if' ),
+      nested = require( 'postcss-nested' ),
+      short = require( 'postcss-short' ),
+      assets = require( 'postcss-assets' ),
+      postcssPresetEnv = require('postcss-preset-env'),
+      autoprefixer = require( 'autoprefixer' ),
+      postcss = require( 'gulp-postcss' ),
       cssnano = require( 'gulp-cssnano' ),
       sourcemaps = require( 'gulp-sourcemaps' ),
       browserSync = require( 'browser-sync' ).create();
+      
 
 const paths = {
     src: {
@@ -48,11 +55,25 @@ gulp.task( 'build-js', () => {
 } );
 
 gulp.task( 'build-css', () => {
+  const plugins = [
+    nested,
+    short,
+    assets({
+      loadPaths: ['./images'],
+      relativeTo: 'src/styles',
+    }),
+    postcssPresetEnv(/* pluginOptions */),
+    autoprefixer({
+      browsers: ['last 1 version']
+    }),
+  ];
+
   return gulp.src( [paths.src.styles] )
-    .pipe(sourcemaps.init())
+    .pipe( sourcemaps.init() )
+    .pipe( postcss(plugins) )
       .pipe( concat( paths.buildNames.styles ) )
-      .pipe( gulpif(process.env.NODE_ENV === 'production', cssnano())  )
-    .pipe(sourcemaps.write('../maps'))
+      .pipe( gulpif(process.env.NODE_ENV === 'production', cssnano() )  )
+    .pipe( sourcemaps.write( '../maps') )
     .pipe( gulp.dest( paths.build.styles ) );
 } );
 
