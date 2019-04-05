@@ -26,16 +26,15 @@ const paths = {
       scripts: 'scripts/*.js'
     },
     build: {
+      dir: 'build/',
       styles: 'build/styles',
       scripts: 'build/scripts'
     },
     buildNames: {
       styles: 'index.min.css',
       scripts: 'index.min.js'
-    }
-    templates: 'src/templates/**/*/.hbs'
-
-    }
+    },
+    templates: 'templates/**/*.hbs'
 };
 
 env({
@@ -43,20 +42,20 @@ env({
   type: 'ini',
 });
 
-gulp.task( 'compile', () => {
-  glob(paths.templates, (err, files) => {
-    if (!err) {
-      const options = {
-        ignorePartials: true,
-        batch: files.map(item => item.slice(0, item.lastIndexOf('/')))
+gulp.task('compile', () => {
+	glob(paths.templates, (err, files) => {
+		if (!err) {
+			const options = {
+				ignorePartials: true,
+				batch: files.map(item => item.slice(0, item.lastIndexOf('/')))
       };
-
-      gulp.src(`${paths.src.dir}/index.hbs`)
-        .pipe(handlebars({}, options))
+      
+			return gulp.src('./templates}/index.hbs')
+        .pipe(handlebars({},options))
         .pipe(rename('index.html'))
         .pipe(gulp.dest(paths.build.dir));
-    }
-  });
+		}
+	});
 });
 
 gulp.task( 'time', () => {
@@ -77,7 +76,7 @@ gulp.task( 'build-js', () => {
     .pipe( gulp.dest( paths.build.scripts ) );
 } );
 
-gulp.task( 'build-css', () => {
+gulp.task( 'build-cs', () => {
   const plugins = [
     nested,
     short,
