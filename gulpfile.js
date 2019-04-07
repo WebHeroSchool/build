@@ -132,7 +132,7 @@ gulp.task( 'js-watch', [ 'build-js' ], () => browserSync.reload() );
 gulp.task( 'css-watch', [ 'build-css' ], () => browserSync.reload() );
 
 gulp.task('clean-build', () => {
-  return gulp.src('./build', {read: false})
+  return gulp.src('./build', { read: false })
     .pipe(clean());
 });
 
