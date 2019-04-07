@@ -17,9 +17,9 @@ const env = require( 'gulp-env' ),
       browserSync = require( 'browser-sync' ).create(),
       autoprefixer = require( 'autoprefixer' ), 
       postcssPresetEnv = require( 'postcss-preset-env' ),
-      templateContext = require( './src/db.json' ),
-      rulesScripts = require( './eslint-rules.json' ),
-      eslint = require( 'gulp-eslint' );
+      handlebars = require( 'gulp-compile-handlebars' ),
+      glob = require( 'glob' ),
+      rename = require( 'gulp-rename' );
 
 const paths = {
     src: {
