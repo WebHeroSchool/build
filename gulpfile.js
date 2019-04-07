@@ -99,7 +99,7 @@ gulp.task( 'eslint', () => {
 gulp.task( 'stylelint', () => {
   gulp.src( paths.lint.styles )
     .pipe( postcss([
-      stylelint(rulesStyles),
+      stylelint( rulesStyles ),
       reporter({
         clegarMessages: true,
         throwErrore: false
