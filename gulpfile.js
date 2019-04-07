@@ -156,4 +156,3 @@ gulp.task('clean-build', () => {
 gulp.task( 'default', ['build'] );
 gulp.task( 'dev', ['build', 'browserSync'] );
 gulp.task( 'prod', ['build'] );
-
