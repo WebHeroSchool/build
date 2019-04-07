@@ -19,7 +19,10 @@ const env = require( 'gulp-env' ),
       postcssPresetEnv = require( 'postcss-preset-env' ),
       templateContext = require( './src/db.json' ),
       rulesScripts = require( './eslint-rules.json' ),
-      eslint = require( 'gulp-eslint' );
+      eslint = require( 'gulp-eslint' ),
+      stylelint = require( 'stylelint' ),
+      reporter = require( 'postcss-reporter' ),
+      rulesStyles = require( './stylelint-rules.json' );
 
 const paths = {
     src: {
@@ -38,7 +41,8 @@ const paths = {
     },
     templates: 'src/templates/**/*.hbs',
     lint: {
-      scripts: [ '**/*.js', '!node_modules/**/*', '!build/**/*']
+      scripts: [ '**/*.js', '!node_modules/**/*', '!build/**/*' ],
+      styles: [ '**/*.css', '!node_modules/**/*', '!build/**/*' ]
     }
 };
 
@@ -90,6 +94,17 @@ gulp.task( 'eslint', () => {
   gulp.src( paths.lint.scripts )
     .pipe( eslint(rulesScripts) )
     .pipe( eslint.format() );
+});
+
+gulp.task( 'stylelint', () => {
+  gulp.src( paths.lint.styles )
+    .pipe( postcss([
+      stylelint(rulesStyles),
+      reporter({
+        clegarMessages: true,
+        throwErrore: false
+      })
+    ]));
 });
 
 gulp.task( 'build-css', () => {
