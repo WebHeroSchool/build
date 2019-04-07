@@ -17,7 +17,9 @@ const env = require( 'gulp-env' ),
       browserSync = require( 'browser-sync' ).create(),
       autoprefixer = require( 'autoprefixer' ), 
       postcssPresetEnv = require( 'postcss-preset-env' ),
-      templateContext = require( './src/db.json' );
+      templateContext = require( './src/db.json' ),
+      rulesScripts = require( './eslint-rules.json' ),
+      eslint = require( 'gulp-eslint' );
 
 const paths = {
     src: {
@@ -34,7 +36,10 @@ const paths = {
       styles: 'index.min.css',
       scripts: 'index.min.js'
     },
-    templates: 'src/templates/**/*.hbs'
+    templates: 'src/templates/**/*.hbs',
+    lint: {
+      scripts: [ '**/*.js', '!node_modules/**/*', '!build/**/*']
+    }
 };
 
 env({
@@ -71,15 +76,21 @@ gulp.task( 'time', () => {
 
 gulp.task( 'build-js', () => {
   return gulp.src( [paths.src.scripts] )
-    .pipe(sourcemaps.init())
+    .pipe( sourcemaps.init() )
       .pipe( concat( paths.buildNames.scripts ) )
       .pipe( babel({
         presets: ['@babel/env']
       }))
       .pipe( gulpif(process.env.NODE_ENV === 'production', uglify())  )
-    .pipe(sourcemaps.write('../maps'))
+    .pipe( sourcemaps.write('../maps') )
     .pipe( gulp.dest( paths.build.scripts ) );
 } );
+
+gulp.task( 'eslint', () => {
+  gulp.src( paths.lint.scripts )
+    .pipe( eslint(rulesScripts) )
+    .pipe( eslint.format() );
+});
 
 gulp.task( 'build-css', () => {
   const plugins = [
