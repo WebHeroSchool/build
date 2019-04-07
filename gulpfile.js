@@ -47,23 +47,23 @@ env({
   type: 'ini',
 });
 
-gulp.task('compile', () => {
+gulp.task( 'compile', () => {
 	glob(paths.templates, (err, files) => {
-		if (!err) {
+		if ( !err ) {
 			const options = {
 				ignorePartials: true,
         batch: files.map(item => item.slice(0, item.lastIndexOf('/'))),
         helpers: {
           capitals: str => str.toUpperCase(),
-          sum: (a,b) => a + b,
-          point: (str) => str.split('').join('.'),
+          sum: ( a, b ) => a + b,
+          point: ( str ) => str.split('').join('.'),
         }
       };
       
-      return gulp.src(`${paths.src.dir}/index.hbs`)
-        .pipe(handlebars(templateContext, options))
-        .pipe(rename('index.html'))
-        .pipe(gulp.dest(paths.build.dir));
+      return gulp.src( `${paths.src.dir}/index.hbs` )
+        .pipe(handlebars( templateContext, options) )
+        .pipe(rename( 'index.html') )
+        .pipe( gulp.dest(paths.build.dir) );
     }
 	});
 });
