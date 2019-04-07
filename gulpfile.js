@@ -17,7 +17,9 @@ const env = require( 'gulp-env' ),
       browserSync = require( 'browser-sync' ).create(),
       autoprefixer = require( 'autoprefixer' ), 
       postcssPresetEnv = require( 'postcss-preset-env' ),
-      templateContext = require( './src/db.json' );
+      templateContext = require( './src/db.json' ),
+      rulesScripts = require( './eslint-rules.json' ),
+      eslint = require( 'gulp-eslint' );
 
 const paths = {
     src: {
@@ -34,7 +36,10 @@ const paths = {
       styles: 'index.min.css',
       scripts: 'index.min.js'
     },
-    templates: 'src/templates/**/*.hbs'
+    templates: 'src/templates/**/*.hbs',
+    lint: {
+      scripts: [ '**/*.js', '!node_modules/**/*', '!build/**/*']
+    }
 };
 
 env({
@@ -42,23 +47,23 @@ env({
   type: 'ini',
 });
 
-gulp.task('compile', () => {
+gulp.task( 'compile', () => {
 	glob(paths.templates, (err, files) => {
-		if (!err) {
+		if ( !err ) {
 			const options = {
 				ignorePartials: true,
         batch: files.map(item => item.slice(0, item.lastIndexOf('/'))),
         helpers: {
           capitals: str => str.toUpperCase(),
-          sum: (a,b) => a + b,
-          point: (str) => str.split('').join('.'),
+          sum: ( a, b ) => a + b,
+          point: ( str ) => str.split('').join('.'),
         }
       };
       
-      return gulp.src(`${paths.src.dir}/index.hbs`)
-        .pipe(handlebars(templateContext, options))
-        .pipe(rename('index.html'))
-        .pipe(gulp.dest(paths.build.dir))
+      return gulp.src( `${ paths.src.dir }/index.hbs` )
+        .pipe(handlebars( templateContext, options) )
+        .pipe(rename( 'index.html') )
+        .pipe( gulp.dest(paths.build.dir) );
     }
 	});
 });
@@ -71,15 +76,21 @@ gulp.task( 'time', () => {
 
 gulp.task( 'build-js', () => {
   return gulp.src( [paths.src.scripts] )
-    .pipe(sourcemaps.init())
+    .pipe( sourcemaps.init() )
       .pipe( concat( paths.buildNames.scripts ) )
       .pipe( babel({
         presets: ['@babel/env']
       }))
-      .pipe( gulpif(process.env.NODE_ENV === 'production', uglify())  )
-    .pipe(sourcemaps.write('../maps'))
+      .pipe( gulpif(process.env.NODE_ENV === 'production', uglify()) )
+    .pipe( sourcemaps.write( '../maps' ) )
     .pipe( gulp.dest( paths.build.scripts ) );
 } );
+
+gulp.task( 'eslint', () => {
+  gulp.src( paths.lint.scripts )
+    .pipe( eslint(rulesScripts) )
+    .pipe( eslint.format() );
+});
 
 gulp.task( 'build-css', () => {
   const plugins = [
@@ -99,7 +110,7 @@ gulp.task( 'build-css', () => {
     .pipe( sourcemaps.init() )
     .pipe( postcss(plugins) )
       .pipe( concat( paths.buildNames.styles ) )
-      .pipe( gulpif(process.env.NODE_ENV === 'production', cssnano() )  )
+      .pipe( gulpif(process.env.NODE_ENV === 'production', cssnano() ) )
     .pipe( sourcemaps.write( '../maps') )
     .pipe( gulp.dest( paths.build.styles ) );
 } );
@@ -121,11 +132,10 @@ gulp.task( 'js-watch', [ 'build-js' ], () => browserSync.reload() );
 gulp.task( 'css-watch', [ 'build-css' ], () => browserSync.reload() );
 
 gulp.task('clean-build', () => {
-  return gulp.src('./build', {read: false})
+  return gulp.src('./build', { read: false })
     .pipe(clean());
 });
 
 gulp.task( 'default', ['build'] );
 gulp.task( 'dev', ['build', 'browserSync'] );
 gulp.task( 'prod', ['build'] );
-
