@@ -6,7 +6,8 @@
     "test": "gulp lint && exit 1",
     "hello": "echo hello",
     "start": "gulp dev",
-    "build": "gulp"
+    "build": "gulp",
+    "postinstall": "gulp"
   },
   "pre-push": [
     "test"
