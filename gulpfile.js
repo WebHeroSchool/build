@@ -82,7 +82,7 @@ gulp.task( 'build-js', () => {
         presets: ['@babel/env']
       }))
       .pipe( gulpif(process.env.NODE_ENV === 'production', uglify()) )
-    .pipe( sourcemaps.write('../maps') )
+    .pipe( sourcemaps.write( '../maps' ) )
     .pipe( gulp.dest( paths.build.scripts ) );
 } );
 
