@@ -32,3 +32,8 @@
 ::placeholder {/* autoprefixer */
   color: red;
 }
+
+.text {
+font-size: 32px;
+font-weight: bolder;
+}

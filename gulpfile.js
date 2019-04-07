@@ -47,7 +47,12 @@ gulp.task('compile', () => {
 		if (!err) {
 			const options = {
 				ignorePartials: true,
-				batch: files.map(item => item.slice(0, item.lastIndexOf('/')))
+        batch: files.map(item => item.slice(0, item.lastIndexOf('/'))),
+        helpers: {
+          capitals: str => str.toUpperCase(),
+          sum: (a,b) => a + b,
+          point: (str) => str.split('').join('.'),
+        }
       };
       
       return gulp.src(`${paths.src.dir}/index.hbs`)
@@ -76,7 +81,7 @@ gulp.task( 'build-js', () => {
     .pipe( gulp.dest( paths.build.scripts ) );
 } );
 
-gulp.task( 'build-cs', () => {
+gulp.task( 'build-css', () => {
   const plugins = [
     nested,
     short,
