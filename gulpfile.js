@@ -63,7 +63,7 @@ gulp.task('compile', () => {
       return gulp.src(`${paths.src.dir}/index.hbs`)
         .pipe(handlebars(templateContext, options))
         .pipe(rename('index.html'))
-        .pipe(gulp.dest(paths.build.dir))
+        .pipe(gulp.dest(paths.build.dir));
     }
 	});
 });
@@ -81,7 +81,7 @@ gulp.task( 'build-js', () => {
       .pipe( babel({
         presets: ['@babel/env']
       }))
-      .pipe( gulpif(process.env.NODE_ENV === 'production', uglify())  )
+      .pipe( gulpif(process.env.NODE_ENV === 'production', uglify()) )
     .pipe( sourcemaps.write('../maps') )
     .pipe( gulp.dest( paths.build.scripts ) );
 } );
@@ -110,7 +110,7 @@ gulp.task( 'build-css', () => {
     .pipe( sourcemaps.init() )
     .pipe( postcss(plugins) )
       .pipe( concat( paths.buildNames.styles ) )
-      .pipe( gulpif(process.env.NODE_ENV === 'production', cssnano() )  )
+      .pipe( gulpif(process.env.NODE_ENV === 'production', cssnano() ) )
     .pipe( sourcemaps.write( '../maps') )
     .pipe( gulp.dest( paths.build.styles ) );
 } );
