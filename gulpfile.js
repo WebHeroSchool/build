@@ -62,9 +62,9 @@ gulp.task( 'compile', () => {
           sum: ( a, b ) => a + b,
           point: ( str ) => str.split('').join('.'),
         }
-      };
-      
-      return gulp.src( `${paths.src.dir}/index.hbs` )
+      };      
+
+      return gulp.src( `${ paths.src.dir }/index.hbs` )
         .pipe(handlebars( templateContext, options) )
         .pipe(rename( 'index.html') )
         .pipe( gulp.dest(paths.build.dir) );
@@ -156,4 +156,3 @@ gulp.task('clean-build', () => {
 gulp.task( 'default', ['build'] );
 gulp.task( 'dev', ['build', 'browserSync'] );
 gulp.task( 'prod', ['build'] );
-
