@@ -5,6 +5,7 @@
 
 .postcss-nested {
   position: fixed;
+  color: #555;
 
   &__wrap { /* для БЭМ */
     display: none;
