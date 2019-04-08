@@ -22,18 +22,22 @@ const env = require( 'gulp-env' ),
       eslint = require( 'gulp-eslint' ),
       stylelint = require( 'stylelint' ),
       reporter = require( 'postcss-reporter' ),
-      rulesStyles = require( './stylelint-rules.json' );
+      rulesStyles = require( './stylelint-rules.json' ),
+      filter = require( 'gulp-filter' ),
+      imagemin = require( 'gulp-imagemin' );
 
 const paths = {
     src: {
       dir: 'src/',
       styles: 'src/styles/*.css',
-      scripts: 'src/scripts/*.js'
+      scripts: 'src/scripts/*.js',
+      fonts: './src/fonts/**/*'
     },
     build: {
       dir: 'build/',
       styles: 'build/styles',
-      scripts: 'build/scripts'
+      scripts: 'build/scripts',
+      fonts: 'build/fonts'
     },
     buildNames: {
       styles: 'index.min.css',
@@ -158,6 +162,11 @@ gulp.task( 'watch', () => {
     .on( 'change', browserSync.reload );
 } );
 
+gulp.task( 'build-fonts', () => {
+  gulp.src( paths.src.fonts )
+      .pipe( filter( ['*.woff', '*.ttf', '*.woff2'] ))
+      .pipe( gulp.dest( paths.build.fonts ));
+});
 
 
 gulp.task('clean-build', () => {
