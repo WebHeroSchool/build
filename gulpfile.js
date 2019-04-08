@@ -52,7 +52,7 @@ env({
 });
 
 gulp.task( 'compile', () => {
-	glob(paths.templates, (err, files) => {
+	glob(paths.templates, ( err, files ) => {
 		if ( !err ) {
 			const options = {
 				ignorePartials: true,
@@ -62,9 +62,9 @@ gulp.task( 'compile', () => {
           sum: ( a, b ) => a + b,
           point: ( str ) => str.split('').join('.'),
         }
-      };      
-
-      return gulp.src( `${ paths.src.dir }/index.hbs` )
+      };
+      
+    gulp.src( `${ paths.src.dir }/index.hbs` )
         .pipe(handlebars( templateContext, options) )
         .pipe(rename( 'index.html') )
         .pipe( gulp.dest(paths.build.dir) );
