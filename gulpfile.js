@@ -19,7 +19,10 @@ const env = require( 'gulp-env' ),
       postcssPresetEnv = require( 'postcss-preset-env' ),
       templateContext = require( './src/db.json' ),
       rulesScripts = require( './eslint-rules.json' ),
-      eslint = require( 'gulp-eslint' );
+      eslint = require( 'gulp-eslint' ),
+      stylelint = require( 'stylelint' ),
+      reporter = require( 'postcss-reporter' ),
+      rulesStyles = require( './stylelint-rules.json' );
 
 const paths = {
     src: {
@@ -38,7 +41,8 @@ const paths = {
     },
     templates: 'src/templates/**/*.hbs',
     lint: {
-      scripts: [ '**/*.js', '!node_modules/**/*', '!build/**/*']
+      scripts: [ '**/*.js', '!node_modules/**/*', '!build/**/*' ],
+      styles: [ '**/*.css', '!node_modules/**/*', '!build/**/*' ]
     }
 };
 
@@ -58,8 +62,8 @@ gulp.task( 'compile', () => {
           sum: ( a, b ) => a + b,
           point: ( str ) => str.split('').join('.'),
         }
-      };
-      
+      };      
+
       return gulp.src( `${ paths.src.dir }/index.hbs` )
         .pipe(handlebars( templateContext, options) )
         .pipe(rename( 'index.html') )
@@ -86,12 +90,6 @@ gulp.task( 'build-js', () => {
     .pipe( gulp.dest( paths.build.scripts ) );
 } );
 
-gulp.task( 'eslint', () => {
-  gulp.src( paths.lint.scripts )
-    .pipe( eslint(rulesScripts) )
-    .pipe( eslint.format() );
-});
-
 gulp.task( 'build-css', () => {
   const plugins = [
     nested,
@@ -113,9 +111,28 @@ gulp.task( 'build-css', () => {
       .pipe( gulpif(process.env.NODE_ENV === 'production', cssnano() ) )
     .pipe( sourcemaps.write( '../maps') )
     .pipe( gulp.dest( paths.build.styles ) );
-} );
+});
 
 gulp.task( 'build', [ 'build-js', 'build-css'] );
+
+gulp.task( 'eslint', () => {
+  gulp.src( paths.lint.scripts )
+    .pipe( eslint(rulesScripts) )
+    .pipe( eslint.format() );
+});
+
+gulp.task( 'stylelint', () => {
+  gulp.src( paths.lint.styles )
+    .pipe( postcss([
+      stylelint( rulesStyles ),
+      reporter({
+        clegarMessages: true,
+        throwErrore: false
+      })
+    ]));
+});
+
+gulp.task( 'lint', [ 'stylelint', 'eslint'] );
 
 gulp.task( 'browserSync', () => {
   browserSync.init({

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "gulp lint",
     "hello": "echo hello",
     "start": "gulp dev",
     "build": "gulp"
@@ -41,7 +41,10 @@
     "postcss-assets": "^5.0.0",
     "postcss-nested": "^4.1.2",
     "postcss-preset-env": "^6.6.0",
-    "postcss-short": "^5.0.0"
+    "postcss-reporter": "^6.0.1",
+    "postcss-short": "^5.0.0",
+    "stylelint": "^9.10.1",
+    "stylelint-config-standard": "^18.2.0"
   },
   "dependencies": {
     "glob": "^7.1.3",

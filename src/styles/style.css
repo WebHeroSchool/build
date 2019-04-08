@@ -1,5 +1,6 @@
 .title {
   background: rgb(158, 147, 211);
+  font-weight: bold;
 }
 
 .postcss-nested {
@@ -20,7 +21,6 @@
 
 .short {/* заролнение в одну строчку, *-игнорирует значение */
   position: relative 0 10px * 20px;
-
   size: 50px 100px;
 }
 
@@ -35,5 +35,5 @@
 
 .text {
 font-size: 32px;
-font-weight: bolder;
+font-weight: 500;
 }
