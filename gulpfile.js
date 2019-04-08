@@ -23,21 +23,23 @@ const env = require( 'gulp-env' ),
       stylelint = require( 'stylelint' ),
       reporter = require( 'postcss-reporter' ),
       rulesStyles = require( './stylelint-rules.json' ),
-      filter = require( 'gulp-filter' ),
+      filter = require('gulp-filter'),
       imagemin = require( 'gulp-imagemin' );
 
 const paths = {
     src: {
-      dir: 'src/',
-      styles: 'src/styles/*.css',
-      scripts: 'src/scripts/*.js',
-      fonts: './src/fonts/**/*'
+      dir: './src/',
+      styles: './src/styles/*.css',
+      scripts: './src/scripts/*.js',
+      fonts: './src/fonts/**/*',
+      images: './src/images/**/*'
     },
     build: {
       dir: 'build/',
       styles: 'build/styles',
       scripts: 'build/scripts',
-      fonts: 'build/fonts'
+      fonts: 'build/fonts',
+      images: 'build/images'
     },
     buildNames: {
       styles: 'index.min.css',
@@ -106,7 +108,7 @@ gulp.task( 'build-css', () => {
     }),
     postcssPresetEnv(/* pluginOptions */),
     autoprefixer({
-      browsers: ['last 1 version']
+      browsers: ['last 2 version']
     }),
   ];
 
@@ -118,8 +120,6 @@ gulp.task( 'build-css', () => {
     .pipe( sourcemaps.write( '../maps') )
     .pipe( gulp.dest( paths.build.styles ) );
 });
-
-gulp.task( 'build', [ 'build-js', 'build-css'] );
 
 gulp.task( 'eslint', () => {
   gulp.src( paths.lint.scripts )
@@ -164,15 +164,22 @@ gulp.task( 'watch', () => {
 
 gulp.task( 'build-fonts', () => {
   gulp.src( paths.src.fonts )
-      .pipe( filter( ['*.woff', '*.ttf', '*.woff2'] ))
-      .pipe( gulp.dest( paths.build.fonts ));
+    //.pipe( filter( ['*.woff', '*.woff2', '*,eot', '*.ttf'] )) //with filter not working
+    .pipe( gulp.dest( paths.build.fonts ));
 });
 
+gulp.task( 'build-images', () =>
+    gulp.src( paths.src.images )
+        .pipe( imagemin() )
+        .pipe( gulp.dest( paths.build.images ))
+);
 
 gulp.task('clean-build', () => {
   return gulp.src('./build', { read: false })
     .pipe(clean());
 });
+
+gulp.task( 'build', [ 'build-js', 'build-css', 'build-fonts', 'build-images', 'compile']  );
 
 gulp.task( 'default', ['build'] );
 gulp.task( 'dev', ['build', 'browserSync'] );
