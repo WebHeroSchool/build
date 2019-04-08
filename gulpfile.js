@@ -27,7 +27,7 @@ const env = require( 'gulp-env' ),
 const paths = {
     src: {
       dir: 'src/',
-      styles: 'scr/styles/*.css',
+      styles: 'src/styles/*.css',
       scripts: 'src/scripts/*.js'
     },
     build: {
@@ -156,3 +156,4 @@ gulp.task('clean-build', () => {
 gulp.task( 'default', ['build'] );
 gulp.task( 'dev', ['build', 'browserSync'] );
 gulp.task( 'prod', ['build'] );
+
