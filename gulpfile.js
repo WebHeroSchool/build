@@ -95,7 +95,7 @@ gulp.task( 'build-css', () => {
     nested,
     short,
     assets({
-      loadPaths: ['./images'],
+      loadPaths: ['src/images'],
       relativeTo: 'src/styles',
     }),
     postcssPresetEnv(/* pluginOptions */),
