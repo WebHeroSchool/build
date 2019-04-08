@@ -39,6 +39,8 @@ const paths = {
       styles: 'index.min.css',
       scripts: 'index.min.js'
     },
+    handlebars: [ './src/**/*.hbs' ],
+    contextJson: './src/db.json',
     templates: 'src/templates/**/*.hbs',
     lint: {
       scripts: [ '**/*.js', '!node_modules/**/*', '!build/**/*' ],
@@ -141,12 +143,22 @@ gulp.task( 'browserSync', () => {
     }
   });
 
-  gulp.watch( 'scripts/*.js', ['js-watch'] );
-  gulp.watch( 'styles/*.css', ['css-watch'] );
+  gulp.watch( paths.src.scripts, ['js-watch'] );
+  gulp.watch( paths.src.styles, ['css-watch'] );
+  gulp.watch( paths.handlebars, ['compile-watch'] );
 } );
 
-gulp.task( 'js-watch', [ 'build-js' ], () => browserSync.reload() );
-gulp.task( 'css-watch', [ 'build-css' ], () => browserSync.reload() );
+gulp.task( 'watch', () => {
+  gulp.task( 'js-watch', [ 'build-js' ], () => browserSync.reload() );
+  gulp.task( 'css-watch', [ 'build-css' ], () => browserSync.reload() );
+  gulp.task( 'compile-watch', ['compile'], () => browserSync.reload() );
+  gulp.watch( paths.contextJson )
+    .on( 'change', browserSync.reload );
+  gulp.watch( `${paths.build.dir}/**/*` )
+    .on( 'change', browserSync.reload );
+} );
+
+
 
 gulp.task('clean-build', () => {
   return gulp.src('./build', { read: false })
