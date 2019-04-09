@@ -22,23 +22,31 @@ const env = require( 'gulp-env' ),
       eslint = require( 'gulp-eslint' ),
       stylelint = require( 'stylelint' ),
       reporter = require( 'postcss-reporter' ),
-      rulesStyles = require( './stylelint-rules.json' );
+      rulesStyles = require( './stylelint-rules.json' ),
+      filter = require('gulp-filter'),
+      imagemin = require( 'gulp-imagemin' );
 
 const paths = {
     src: {
-      dir: 'src/',
-      styles: 'src/styles/*.css',
-      scripts: 'src/scripts/*.js'
+      dir: './src/',
+      styles: './src/styles/*.css',
+      scripts: './src/scripts/*.js',
+      fonts: './src/fonts/**/*',
+      images: './src/images/**/*'
     },
     build: {
       dir: 'build/',
       styles: 'build/styles',
-      scripts: 'build/scripts'
+      scripts: 'build/scripts',
+      fonts: 'build/fonts',
+      images: 'build/images'
     },
     buildNames: {
       styles: 'index.min.css',
       scripts: 'index.min.js'
     },
+    handlebars: [ './src/**/*.hbs' ],
+    contextJson: './src/db.json',
     templates: 'src/templates/**/*.hbs',
     lint: {
       scripts: [ '**/*.js', '!node_modules/**/*', '!build/**/*' ],
@@ -100,7 +108,7 @@ gulp.task( 'build-css', () => {
     }),
     postcssPresetEnv(/* pluginOptions */),
     autoprefixer({
-      browsers: ['last 1 version']
+      browsers: ['last 2 version']
     }),
   ];
 
@@ -112,8 +120,6 @@ gulp.task( 'build-css', () => {
     .pipe( sourcemaps.write( '../maps') )
     .pipe( gulp.dest( paths.build.styles ) );
 });
-
-gulp.task( 'build', [ 'build-js', 'build-css'] );
 
 gulp.task( 'eslint', () => {
   gulp.src( paths.lint.scripts )
@@ -141,17 +147,39 @@ gulp.task( 'browserSync', () => {
     }
   });
 
-  gulp.watch( 'scripts/*.js', ['js-watch'] );
-  gulp.watch( 'styles/*.css', ['css-watch'] );
+  gulp.watch( paths.src.scripts, ['js-watch'] );
+  gulp.watch( paths.src.styles, ['css-watch'] );
+  gulp.watch( paths.handlebars, ['compile-watch'] );
 } );
 
-gulp.task( 'js-watch', [ 'build-js' ], () => browserSync.reload() );
-gulp.task( 'css-watch', [ 'build-css' ], () => browserSync.reload() );
+gulp.task( 'watch', () => {
+  gulp.task( 'js-watch', [ 'build-js' ], () => browserSync.reload() );
+  gulp.task( 'css-watch', [ 'build-css' ], () => browserSync.reload() );
+  gulp.task( 'compile-watch', ['compile'], () => browserSync.reload() );
+  gulp.watch( paths.contextJson )
+    .on( 'change', browserSync.reload );
+  gulp.watch( `${paths.build.dir}/**/*` )
+    .on( 'change', browserSync.reload );
+} );
+
+gulp.task( 'build-fonts', () => {
+  gulp.src( paths.src.fonts )
+    //.pipe( filter( ['*.woff', '*.woff2', '*,eot', '*.ttf'] )) //with filter not working
+    .pipe( gulp.dest( paths.build.fonts ));
+});
+
+gulp.task( 'build-images', () =>
+    gulp.src( paths.src.images )
+        .pipe( imagemin() )
+        .pipe( gulp.dest( paths.build.images ))
+);
 
 gulp.task('clean-build', () => {
   return gulp.src('./build', { read: false })
     .pipe(clean());
 });
+
+gulp.task( 'build', [ 'build-js', 'build-css', 'build-fonts', 'build-images', 'compile']  );
 
 gulp.task( 'default', ['build'] );
 gulp.task( 'dev', ['build', 'browserSync'] );
